@@ -1,15 +1,8 @@
 /*
-  Ethernet Monitor Analogo
- By: http://www.elprofegarcia.com/
- Este programa usa el Modulo Ethernet de Arduino para monitorear las entradas analogicas A0-A5
- 
  Conexiones:
  * Ethernet shield usa los pins 10, 11, 12, 13
  * Monitorea los pines Analogos de A0 a A5
- 
-Se debe conectar el modulo a la red local y se debe asignar una IP fija que no coincida
-con los equipos de la red que ya estan funcionando pero dede estar dentro de la SubRed.
-puede monitorear la IP de su PC dentro de la ventana de comandos CMD con el comando ipconfig
+
 */
 
 #include <SPI.h>
@@ -17,8 +10,8 @@ puede monitorear la IP de su PC dentro de la ventana de comandos CMD con el coma
 #include "DHT.h"
 #include "pitches.h"
 #define DHTTYPE DHT22
-                               // Introduzca una dirección MAC y la dirección IP para el controlador
 
+// Introduzca una dirección MAC y la dirección IP para el controlador
 byte mac[] = { 
 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192,168,0,50);   // Esta direccion IP debe ser cambiada obligatoriamente 
@@ -98,7 +91,7 @@ float temperatura=((t-32)/18.8);
           cliente.println("HTTP/1.1 200 OK");
           cliente.println("Content-Type: text/html");   // Envia el encabezado en codigo HTML estandar
           cliente.println("Connection: close"); 
-    cliente.println("Refresh: 3");  // refresca la pagina automaticamente cada 3 segundos
+		  cliente.println("Refresh: 3");  // refresca la pagina automaticamente cada 3 segundos
           cliente.println();
           cliente.println("<!DOCTYPE HTML>"); 
           cliente.println("<html>");
@@ -113,15 +106,12 @@ float temperatura=((t-32)/18.8);
           cliente.println("<br />");
           
           cliente.println("< br />");
-          //cliente.println("<a href=\"/?button1\"\"> Ver Tempertura</a> ");           // construye en la pagina cada uno de los botones  
-                     cliente.println("TEMPERATURA: ");
-               cliente.println(temperatura);  
+		  cliente.println("TEMPERATURA: ");
+          cliente.println(temperatura);  
           cliente.println(" | | | ");
-                     cliente.println("HUMEDAD: ");
-               cliente.println(humedad);  
-          //cliente.println("<a href=\"/?button2\"\"> Ver Humedad</a> ");           // construye en la pagina cada uno de los botones
+          cliente.println("HUMEDAD: ");
+          cliente.println(humedad);  
           cliente.println("< br />");
-          
           cliente.println("Lectura: "); 
           
           if(value){
@@ -165,32 +155,12 @@ float temperatura=((t-32)/18.8);
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //**************************************************************************************************
 //*                                                                                                *
 //*   FUNCIONES                                                                                    *
 //*                                                                                                *
 //*                                                                                                *
 //**************************************************************************************************
-
-
 
 void MedirDHT11(float temp)
 {int caso=0;
@@ -208,19 +178,16 @@ void MedirDHT11(float temp)
     digitalWrite(pinverde, LOW);   // poner el Pin en HIGH
      digitalWrite(pinazul,LOW);   // poner el Pin en HIGH
      digitalWrite(pinrojo, HIGH);   // poner el Pin en HIGH
-    // statements
     break;
   case 2:
     digitalWrite(pinverde, HIGH);   // poner el Pin en HIGH
      digitalWrite(pinazul,LOW);   // poner el Pin en HIGH
      digitalWrite(pinrojo, LOW);   // poner el Pin en HIGH
-    // statements
     break;
   case 3:
   digitalWrite(pinverde, LOW);   // poner el Pin en HIGH
      digitalWrite(pinazul,HIGH);   // poner el Pin en HIGH
      digitalWrite(pinrojo, LOW);   // poner el Pin en HIGH 
-    // statements
   break;
   default:
   {}
@@ -233,18 +200,11 @@ void Alarma(int value)
   if (value == HIGH)
   {  digitalWrite(pinLED,HIGH);   // poner el Pin en HIGH
   for (int thisNote = 0; thisNote < 8; thisNote++) {
-
-    // to calculate the note duration, take one second
-    // divided by the note type.
-    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
     int noteDuration = 1000 / noteDurations[thisNote];
     tone(3, melody[thisNote], noteDuration);
 
-    // to distinguish the notes, set a minimum time between them.
-    // the note's duration + 30% seems to work well:
     int pauseBetweenNotes = noteDuration * 1.30;
     delay(pauseBetweenNotes);
-    // stop the tone playing:
     noTone(3);
   }
   /*

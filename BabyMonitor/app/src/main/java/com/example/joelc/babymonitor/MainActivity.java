@@ -61,19 +61,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.
                 Builder().permitNetwork().build());
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-/*        TimerTask task = new TimerTask(){
-            @Override
-            public void run(){
-                // call AsynTask to perform network operation on separate thread
-                //new HttpAsyncTask().execute("http://hmkcode.appspot.com/rest/controller/get.json");
-                new HttpAsyncTask().execute("http://192.168.0.50/");
-            }
 
-        };
-
-
-        new Timer().scheduleAtFixedRate(task,0,5000);
-*/
     }
 
     public void buscar(View view) {
@@ -86,8 +74,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                // call AsynTask to perform network operation on separate thread
-                //new HttpAsyncTask().execute("http://hmkcode.appspot.com/rest/controller/get.json");
+
                 new HttpAsyncTask().execute("http://" + ip + "/");
             }
 
@@ -99,64 +86,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     }
-    /*
-    //Funcion obsoleta,funciona correctamente en el main pero no en un thread
-    void resultadosGoogle(String ip) throws Exception {
-        String pagina = "", devuelve = "";
-        String palabra1="TEMPERATURA: ";
-        String palabra2="HUMEDAD: ";
 
-        //URL url = new URL("https://www.google.com.ar/search?q="
-                //+ URLEncoder.encode(palabras, "UTF-8"));
-        URL url = new URL("http://" + ip+"/");
-        HttpURLConnection conexion = (HttpURLConnection)
-                url.openConnection();
-        conexion.setRequestProperty("User-Agent",
-                "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)");
-        //Toast.makeText(getApplicationContext(), "!! "+conexion.getResponseCode()+" @@", Toast.LENGTH_SHORT).show();
-
-        if (conexion.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new
-                    InputStreamReader(conexion.getInputStream()));
-            String linea = reader.readLine();
-            while (linea != null) {
-                pagina += linea;
-                linea = reader.readLine();
-            }
-            reader.close();
-            //BUSCAR PALABRA TEMPERATURA
-            RelativeLayout rl = (RelativeLayout)findViewById(R.id.fondo);
-
-            int ini = pagina.indexOf(palabra1);
-            if (ini != -1) {
-                int fin = pagina.indexOf(" ", ini + palabra1.length()+1);
-                devuelve = pagina.substring(ini + palabra1.length() , fin);
-                salidaTemperatura.setText(palabra1 +" "+ devuelve);
-
-
-            } else {
-                devuelve = "no encontrado";
-            }
-            //BUSCAR PALABRA HUMEDAD
-            ini = pagina.indexOf(palabra2);
-            if (ini != -1) {
-                int fin = pagina.indexOf(" ", ini + palabra2.length()+1);
-                devuelve = pagina.substring(ini + palabra2.length(), fin);
-                salidaHumedad.setText(palabra2 +" "+ devuelve);
-            } else {
-                devuelve = "no encontrado";
-            }
-        } else {
-            salidaTemperatura.setText("ERROR: "
-                    + conexion.getResponseMessage() + "\n");
-            salidaHumedad.setText("ERROR: "
-                    + conexion.getResponseMessage() + "\n");
-        }
-
-        conexion.disconnect();
-
-    }
-    */
 
     @Override
     public void onStart() {
@@ -224,8 +154,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 case Sensor.TYPE_PROXIMITY:
 
                     // Si detecta 0 lo represento
-
-
                     try {if(event.values[0] == estado) {
                         estado = event.values[0];
                         RelativeLayout rl = (RelativeLayout)findViewById(R.id.fondo);
@@ -267,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String pagina) {
-            //Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
             String palabra1="TEMPERATURA: ";
             String palabra2="HUMEDAD: ";
             String palabra3="Lectura: ";
